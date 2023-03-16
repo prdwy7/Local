@@ -1,0 +1,10 @@
+---
+# tasks file for stopLoanIQprocess
+- name: Find Notepad process ID
+  win_shell: tasklist /nh /fi "imagename eq notepad.exe"
+  register: tasklist_output
+
+- name: Stop Notepad process
+  win_shell: taskkill /f /pid {{ item.split()[1] }}
+  loop: "{{ tasklist_output.stdout_lines }}"
+  when: "'notepad.exe' in item"

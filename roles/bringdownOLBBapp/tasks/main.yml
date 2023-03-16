@@ -1,0 +1,11 @@
+---
+# tasks file for bringdownOLBBapp
+#- name: Navigate to env
+#  win_command:
+#    chdir: C:\Users\Administrator\Desktop\LoanIQ_Shortcut\BRINGDOWN_APP
+#    cmd: BRINGDOWN_OLBB_APP.cmd
+# or we can use the below
+- name: Bring down app
+  win_shell: |
+    cd $env:USERPROFILE\Desktop\LoanIQ_Shortcut\BRINGDOWN_APP
+    .\BRINGDOWN_OLBB_APP.cmd

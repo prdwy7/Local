@@ -1,0 +1,5 @@
+- name: Stop IIS process
+  hosts: win
+  gather_facts: false
+  roles:
+    - stopLoanIQprocess

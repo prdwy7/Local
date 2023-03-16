@@ -1,0 +1,6 @@
+---
+# tasks file for stopIIS
+- name: Stop IIS process
+  ansible.windows.win_service:
+    name: W3SVC
+    state: stopped

@@ -1,0 +1,6 @@
+---
+# tasks file for bringdownTHISapp
+- name: Bring down app
+  win_shell: |
+    cd $env:USERPROFILE\Desktop\LoanIQ_Shortcut\BRINGDOWN
+    .\BRINGDOWN_THIS_APP.cmd
