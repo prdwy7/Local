@@ -1,0 +1,4 @@
+---
+# tasks file for bringdownCOREapp
+- name: Run bringdown_core_app command
+  win_command: 'powershell -Command "echo Y | & $HOME\Desktop\LoanIQ_Shortcut\BRINGDOWN_APP\BRINGDOWN_CORE_APP"'

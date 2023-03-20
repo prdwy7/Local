@@ -2,4 +2,4 @@
   hosts: win
   gather_facts: false
   roles:
-    - stopLoanIQprocess
+    - bringdownCOREapp
