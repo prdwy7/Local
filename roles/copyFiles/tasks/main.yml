@@ -1,0 +1,34 @@
+---
+# tasks file for copyFiles
+- name: Fetch data
+  set_fact:
+    file_data: "{{ lookup('file', './roles/copyFiles/defaults/paths.txt') }}"
+  delegate_to: 127.0.0.1
+- name: split data
+  set_fact:
+    file_paths: "{{ file_data.split('\n') }}"
+  delegate_to: 127.0.0.1
+- name: Display vars
+  debug:
+    var: file_paths
+  delegate_to: 127.0.0.1
+- name: Copy files
+  ansible.windows.win_copy:
+    src: "{{ item }}"
+    dest: 'C:\\Deliveries\\DR\\April2022\\{{ item | regex_replace("\\", "_") | regex_replace(":", "_") | basename }}'
+    remote_src: yes
+    force: yes
+  loop: "{{ file_paths }}"
+- name: Copy files and add _DR suffix
+  ansible.windows.win_copy:
+    src: "{{ item }}"
+    remote_src: yes
+    dest: '{{ item | dirname }}{{ item | basename | splitext | first }}_DR{{ item | basename | splitext | last }}'
+    force: yes
+  loop: "{{ file_paths }}"
+- name: delete the files
+  ansible.windows.win_file:
+    path: "{{ item }}"
+    remote_src: yes
+    state: absent
+  loop: "{{ file_paths }}"
