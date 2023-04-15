@@ -1,0 +1,28 @@
+---
+# tasks file for renameFiles
+- name: Fetch data
+  set_fact:
+    file_data: "{{ lookup('file', './roles/renameFiles/defaults/paths.txt') }}"
+  delegate_to: localhost
+- name: split data
+  set_fact:
+    file_paths: "{{ file_data.split('\n') }}"
+  delegate_to: localhost
+- name: Find context.xml files in each folder
+  win_find:
+    paths: "{{ item }}"
+    patterns: 'context.xml'
+  register: found_files1
+  loop: "{{ file_paths }}"
+- name: Rename context.xml to context.xml_ORG on remote Windows host
+  win_shell: "Rename-Item -Path {{ item.path }} -NewName {{ item.path | replace('context.xml', 'context.xml_ORG') }}"
+  loop: "{{ found_files1.results | json_query('[].files[]') }}"
+- name: Find context_DR.xml files in each folder
+  win_find:
+    paths: "{{ item }}"
+    patterns: 'context_DR.xml'
+  register: found_files2
+  loop: "{{ file_paths }}"
+- name: Rename context_DR.xml to context.xml on remote Windows host
+  win_shell: "Rename-Item -Path {{ item.path }} -NewName {{ item.path | replace('context_DR.xml', 'context.xml') }}"
+  loop: "{{ found_files2.results | map(attribute='files') | list | flatten }}"
